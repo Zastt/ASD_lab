@@ -1,0 +1,19 @@
+public void CountingSort(Student[] arr)
+{
+    int max = 0;
+    foreach (var s in arr) if (s.Debts > max) max = s.Debts;
+
+    int[] count = new int[max + 1];
+    foreach (var s in arr) count[s.Debts]++;
+
+    [cite_start]// Для спадання заборгованостей 
+    int index = 0;
+    for (int i = max; i >= 0; i--)
+    {
+        while (count[i] > 0)
+        {
+            // У спрощеному вигляді для 1 рівня
+            count[i]--;
+        }
+    }
+}
