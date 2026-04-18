@@ -1,51 +1,62 @@
 using System;
 
-public class QueueArray
+namespace Lab1_1
 {
-    private int[] data;
-    private int head;
-    private int tail;
-    private int count;
-    private int size;
-
-    public QueueArray(int size)
+    class Program
     {
-        this.size = size;
-        data = new int[size];
-        head = 0;
-        tail = 0;
-        count = 0;
-    }
-
-    [cite_start]public bool IsFull() => count == size; [cite: 72]
-    [cite_start]public bool IsEmpty() => count == 0; [cite: 73]
-
-    [cite_start]public bool Enqueue(int item) [cite: 74]
-    {
-        if (IsFull()) return false;
-        data[tail] = item;
-        tail = (tail + 1) % size;
-        count++;
-        return true;
-    }
-
-    [cite_start]public int Dequeue() [cite: 75]
-    {
-        if (IsEmpty()) throw new Exception("Queue is empty");
-        int item = data[head];
-        head = (head + 1) % size;
-        count--;
-        return item;
-    }
-
-    public void Print()
-    {
-        int current = head;
-        for (int i = 0; i < count; i++)
+        static void Main()
         {
-            Console.Write(data[current] + " ");
-            current = (current + 1) % size;
+            [cite_start]// Створення черги на 5 елементів [cite: 49]
+            QueueArray queue = new QueueArray(5);
+
+            Console.WriteLine("Додавання елементів 10, 20, 30:");
+            queue.Enqueue(10);
+            queue.Enqueue(20);
+            queue.Enqueue(30);
+            queue.Print(); // Вивід вмісту [cite: 50]
+
+            Console.WriteLine("\nВидалення одного елемента:");
+            int removed = queue.Dequeue();
+            Console.WriteLine($"Видалено: {removed}");
+            queue.Print(); // Вивід після видалення [cite: 51]
         }
-        Console.WriteLine();
+    }
+
+    public class QueueArray
+    {
+        private int[] data;
+        private int head = 0, tail = 0, count = 0, size;
+
+        public QueueArray(int size)
+        {
+            this.size = size;
+            data = new int[size]; // Векторний спосіб розміщення [cite: 68]
+        }
+
+        public bool Enqueue(int item)
+        {
+            if (count == size) return false; // Перевірка isFull [cite: 72]
+            data[tail] = item;
+            tail = (tail + 1) % size; // Циклічний зсув
+            count++;
+            return true;
+        }
+
+        public int Dequeue()
+        {
+            if (count == 0) throw new Exception("Черга порожня!"); // Перевірка isEmpty [cite: 73]
+            int item = data[head];
+            head = (head + 1) % size;
+            count--;
+            return item; // Повертає елемент, що видаляється [cite: 75]
+        }
+
+        public void Print()
+        {
+            Console.Write("Вміст черги: ");
+            for (int i = 0; i < count; i++)
+                Console.Write(data[(head + i) % size] + " ");
+            Console.WriteLine();
+        }
     }
 }
