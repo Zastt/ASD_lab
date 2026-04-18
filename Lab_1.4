@@ -1,19 +1,46 @@
-public void CountingSort(Student[] arr)
+using System;
+using System.Linq;
+
+namespace Lab1_4
 {
-    int max = 0;
-    foreach (var s in arr) if (s.Debts > max) max = s.Debts;
-
-    int[] count = new int[max + 1];
-    foreach (var s in arr) count[s.Debts]++;
-
-    [cite_start]// Для спадання заборгованостей 
-    int index = 0;
-    for (int i = max; i >= 0; i--)
+    class Program
     {
-        while (count[i] > 0)
+        static void Main()
         {
-            // У спрощеному вигляді для 1 рівня
-            count[i]--;
+            Student[] students = {
+                new Student("Сидоров", 5),
+                new Student("Іванов", 2),
+                new Student("Петров", 8),
+                new Student("Коваленко", 0),
+                new Student("Яценко", 5)
+            };
+
+            Console.WriteLine("До сортування:");
+            foreach (var s in students) Console.WriteLine($"{s.LastName}: {s.Debts}");
+
+            // Алгоритм розподіленого підрахунку (Counting Sort)
+            int maxDebts = students.Max(s => s.Debts);
+            int[] count = new int[maxDebts + 1];
+
+            foreach (var s in students) count[s.Debts]++;
+
+            Console.WriteLine("\nПісля сортування (за спаданням заборгованостей):");
+            for (int i = maxDebts; i >= 0; i--) // Спадання
+            {
+                while (count[i] > 0)
+                {
+                    var student = students.First(s => s.Debts == i); 
+                    Console.WriteLine($"{student.LastName}: {i}");
+                    count[i]--;
+                }
+            }
         }
+    }
+
+    class Student
+    {
+        public string LastName;
+        public int Debts;
+        public Student(string name, int d) { LastName = name; Debts = d; }
     }
 }
