@@ -1,0 +1,42 @@
+using System;
+using System.Collections.Generic;
+
+namespace Lab1_5
+{
+    class Program
+    {
+        static void Main()
+        {
+            var students = new List<Student> {
+                new Student("Олексій", 4, true, true),  // Підходить під видалення
+                new Student("Марія", 4, false, true),   // Жінка
+                new Student("Іван", 3, true, true),     // 3 курс
+                new Student("Дмитро", 4, true, true)    // Підходить під видалення
+            };
+
+            Console.WriteLine($"Кількість до: {students.Count}");
+            
+            // Послідовний пошук за критерієм
+            for (int i = students.Count - 1; i >= 0; i--)
+            {
+                if (students[i].Course == 4 && students[i].IsMale && students[i].InKVN)
+                {
+                    Console.WriteLine($"Видалення: {students[i].Name}");
+                    students.RemoveAt(i);
+                }
+            }
+
+            Console.WriteLine($"Кількість після: {students.Count}");
+        }
+    }
+
+    class Student
+    {
+        public string Name;
+        public int Course;
+        public bool IsMale;
+        public bool InKVN;
+        public Student(string n, int c, bool m, bool k) 
+        { Name = n; Course = c; IsMale = m; InKVN = k; }
+    }
+}
