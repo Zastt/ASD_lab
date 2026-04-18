@@ -1,0 +1,39 @@
+public class Student
+{
+    public string LastName, FirstName, Residence;
+    public int Course;
+    public uint TicketId; // Ключ [cite: 167]
+    public double AverageGrade;
+}
+
+public class TreeNode
+{
+    public Student Data;
+    [cite_start]public TreeNode Left, Right; [cite: 164]
+}
+
+public class BinaryTree
+{
+    private TreeNode root;
+
+    public void Add(Student s)
+    {
+        root = AddRecursive(root, s);
+    }
+
+    [cite_start]private TreeNode AddRecursive(TreeNode node, Student s) [cite: 166]
+    {
+        if (node == null) return new TreeNode { Data = s };
+        if (s.TicketId < node.Data.TicketId) node.Left = AddRecursive(node.Left, s);
+        else if (s.TicketId > node.Data.TicketId) node.Right = AddRecursive(node.Right, s);
+        return node;
+    }
+
+    [cite_start]public void PrintInOrder(TreeNode node) [cite: 170]
+    {
+        if (node == null) return;
+        PrintInOrder(node.Left);
+        Console.WriteLine($"{node.Data.TicketId} | {node.Data.LastName}");
+        PrintInOrder(node.Right);
+    }
+}
