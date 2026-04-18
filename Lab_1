@@ -1,0 +1,51 @@
+using System;
+
+public class QueueArray
+{
+    private int[] data;
+    private int head;
+    private int tail;
+    private int count;
+    private int size;
+
+    public QueueArray(int size)
+    {
+        this.size = size;
+        data = new int[size];
+        head = 0;
+        tail = 0;
+        count = 0;
+    }
+
+    [cite_start]public bool IsFull() => count == size; [cite: 72]
+    [cite_start]public bool IsEmpty() => count == 0; [cite: 73]
+
+    [cite_start]public bool Enqueue(int item) [cite: 74]
+    {
+        if (IsFull()) return false;
+        data[tail] = item;
+        tail = (tail + 1) % size;
+        count++;
+        return true;
+    }
+
+    [cite_start]public int Dequeue() [cite: 75]
+    {
+        if (IsEmpty()) throw new Exception("Queue is empty");
+        int item = data[head];
+        head = (head + 1) % size;
+        count--;
+        return item;
+    }
+
+    public void Print()
+    {
+        int current = head;
+        for (int i = 0; i < count; i++)
+        {
+            Console.Write(data[current] + " ");
+            current = (current + 1) % size;
+        }
+        Console.WriteLine();
+    }
+}
