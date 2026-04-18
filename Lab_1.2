@@ -1,42 +1,59 @@
-public class HashEntry
+using System;
+
+namespace Lab1_2
 {
-    public string Value { get; set; }
-    [cite_start]public int Key => Value.Length; [cite: 439]
-}
-
-public class HashTable
-{
-    private HashEntry[] table;
-    private int size;
-    private const double A = 0.618033; // Константа для методу множення
-
-    public HashTable(int size)
+    class Program
     {
-        this.size = size;
-        table = new HashEntry[size];
-    }
-
-    [cite_start]private int GetHash(int key) [cite: 118]
-    {
-        return (int)(size * ((key * A) % 1));
-    }
-
-    [cite_start]public bool Insert(string val) [cite: 119]
-    {
-        int index = GetHash(val.Length);
-        if (table[index] != null) return false; // Без колізій для 1 рівня [cite: 120]
-        table[index] = new HashEntry { Value = val };
-        return true;
-    }
-
-    [cite_start]public void Print() [cite: 122]
-    {
-        for (int i = 0; i < size; i++)
+        static void Main()
         {
-            if (table[i] != null)
-                Console.WriteLine($"[{i}]: Key={table[i].Key}, Value={table[i].Value}");
-            else
-                [cite_start]Console.WriteLine($"[{i}]: Empty"); [cite: 123]
+            HashTable table = new HashTable(10); // Таблиця розміру 10 [cite: 101]
+
+            [cite_start]// Додавання елементів без колізій (1 рівень) [cite: 101]
+            table.Insert("Apple");  // довжина 5
+            table.Insert("Banana"); // довжина 6
+            table.Insert("C#");     // довжина 2
+
+            table.Print(); // Вивід у форматованому вигляді [cite: 102, 125]
+        }
+    }
+
+    public class HashTable
+    {
+        private string[] table;
+        private int size;
+        private const double A = 0.6180339887; // Золотий перетин для хешування
+
+        public HashTable(int size)
+        {
+            this.size = size;
+            table = new string[size]; // Одновимірний масив [cite: 113]
+        }
+
+        private int GetHash(int key)
+        {
+            [cite_start]// Метод множення [cite: 435]
+            return (int)Math.Floor(size * ((key * A) % 1));
+        }
+
+        public bool Insert(string value)
+        {
+            int index = GetHash(value.Length); // Ключ - довжина рядка [cite: 439]
+            if (table[index] != null) return false; // Для 1 рівня без колізій [cite: 120]
+            
+            table[index] = value;
+            return true;
+        }
+
+        public void Print()
+        {
+            Console.WriteLine("{0,-10} | {1,-10} | {2}", "Позиція", "Ключ", "Елемент");
+            for (int i = 0; i < size; i++)
+            {
+                if (table[i] != null)
+                    Console.WriteLine("{0,-10} | {1,-10} | {2}", i, table[i].Length, table[i]);
+                else
+                    Console.WriteLine("{0,-10} | {1,-10} | {2}", i, "-", "Порожньо");
+            }
         }
     }
 }
