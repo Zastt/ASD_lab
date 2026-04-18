@@ -1,0 +1,73 @@
+using System;
+
+namespace Lab1_3
+{
+    class Program
+    {
+        static void Main()
+        {
+            BinaryTree tree = new BinaryTree();
+
+            [cite_start]// Додавання студентів [cite: 144]
+            tree.Insert(new Student("Yatsenko", 12345)); // Ключ - номер квитка [cite: 167]
+            tree.Insert(new Student("Ivanov", 11111));
+            tree.Insert(new Student("Petrov", 22222));
+
+            Console.WriteLine("{0,-15} | {1,-10}", "Прізвище", "Квиток");
+            Console.WriteLine(new string('-', 30));
+            tree.PrintInOrder(); // Послідовний обхід 
+        }
+    }
+
+    public class Student
+    {
+        public string LastName;
+        public uint TicketId; // Ключ [cite: 167]
+
+        public Student(string name, uint id)
+        {
+            LastName = name;
+            TicketId = id;
+        }
+    }
+
+    public class Node
+    {
+        public Student Data;
+        public Node Left, Right; // Посилання на дочірні вузли [cite: 164]
+    }
+
+    public class BinaryTree
+    {
+        private Node root; // Корінь дерева [cite: 165]
+
+        public void Insert(Student s)
+        {
+            root = InsertRecursive(root, s);
+        }
+
+        private Node InsertRecursive(Node root, Student s)
+        {
+            if (root == null) return new Node { Data = s };
+
+            if (s.TicketId < root.Data.TicketId)
+                root.Left = InsertRecursive(root.Left, s);
+            else if (s.TicketId > root.Data.TicketId)
+                root.Right = InsertRecursive(root.Right, s);
+
+            return root;
+        }
+
+        public void PrintInOrder() => PrintRecursive(root);
+
+        private void PrintRecursive(Node root)
+        {
+            [cite_start]if (root != null) // Рекурсивний обхід [cite: 170]
+            {
+                PrintRecursive(root.Left);
+                Console.WriteLine("{0,-15} | {1,-10}", root.Data.LastName, root.Data.TicketId);
+                PrintRecursive(root.Right);
+            }
+        }
+    }
+}
